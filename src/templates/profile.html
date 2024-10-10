@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
+    <script>
+        if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+    }
+    </script>
     <style> 
         body {
             font-family: Arial, sans-serif;
@@ -87,13 +92,14 @@
             <a href="#">New</a>
             <a href="#">Profile</a>
         </div>
-        <a href="login">Log Out</a>
+        <a href="logout">Log Out</a>
+
     </div>
 
     <div class="profile">
         <div class="avatar"></div>
         <div>
-            <h2>Username</h2>
+            <h2>{{ username }}</h2>
             <a href="account-setting"><button class="account-settings">Account Settings</button></a>
         </div>
     </div>
@@ -101,38 +107,17 @@
     <h3>Saved Boards</h3>
     <div class="boards-container">
         <div class="new-board">+</div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
+        {% for board in boards%}
+            <div class="board">
+                <div class="board-image"></div>
+                <span class="board-title">{{board['name']}}</span>
+                <form class="board-actions" action="profile" method="post">
+                    <button onclick="return confirm('Are you sure you would like to delete this board?')" name="delete" value="{{ board['_id'] }}">🗑️</button>
+                    <button>✏️</button>
+                    <button name="duplicate" value="{{ board['_id'] }}">duplicate</button>
+                </form>
             </div>
+        {% endfor%}
         </div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
-            </div>
-        </div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
-            </div>
-        </div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
-            </div>
-        </div>
-    </div>
 </body>
 </html>

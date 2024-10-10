@@ -7,6 +7,7 @@ import flask_login
 from src.models.user import user_loader, request_loader
 from src.models.user import User
 from src.app import get_db
+from flask_login import login_required
 
 @routes.route("/",methods=['GET','POST'])
 @routes.route("/login",methods=['GET','POST'])
@@ -30,3 +31,10 @@ def login():
 @flask_login.login_required
 def protected():
     return flask.redirect('/profile')
+
+
+@routes.route("/logout")
+@flask_login.login_required
+def logout():
+    flask_login.logout_user()
+    return redirect("/")
