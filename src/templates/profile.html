@@ -114,7 +114,7 @@
                 <form class="board-actions" action="profile" method="post">
                     <button onclick="return confirm('Are you sure you would like to delete this board?')" name="delete" value="{{ board['_id'] }}">🗑️</button>
                     <button>✏️</button>
-                    <button name="duplicate" value="{{ board['_id'] }}">duplicate</button>
+                    <button name="duplicate" value="{{ board['_id'] }}">copy</button>
                 </form>
             </div>
         {% endfor%}

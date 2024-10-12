@@ -21,4 +21,5 @@ def home():
             boards = boards.to_list()
         except:
             return flask.redirect('/login')
+    
         return(render_template('profile.html', username=flask_login.current_user.username, boards=boards))
