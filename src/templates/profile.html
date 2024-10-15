@@ -49,61 +49,52 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
-            justify-content: space-between;
         }
         .board {
             border: 1px solid #ddd;
             padding: 10px;
             position: relative;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 220px;
-            height: 200px;
-            box-sizing: border-box;
         }
         .board-image {
             width: 100%;
+            height: 150px;
             background-color: #eee;
-            margin-top: 5px;
             margin-bottom: 10px;
-            flex-grow: 1;
         }
         .board-title {
             font-weight: bold;
-            font-size: 15px;
         }
         .board-actions {
-            display: flex;
-            justify-content:space-between;
-            gap: 10px;
-            margin-top: auto;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
         }
         .board-actions button {
+            background: none;
+            border: none;
             cursor: pointer;
+            margin-left: 5px;
         }
         .new-board {
             display: flex;
             justify-content: center;
             align-items: center;
             border: 2px dashed #ddd;
+            height: 200px;
             font-size: 40px;
             cursor: pointer;
-            height: 200px;
-            width: 200px;
-            box-sizing: border-box;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        
+        <div>
+            <a href="{{ url_for('routes.profile', new=True) }}">New</a>
+            <a href="{{ url_for('routes.profile') }}">Profile</a>
+        </div>
         <a href="{{ url_for('routes.logout') }}">Log Out</a>
     </div>
 
-    <!-- 
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul class="flashes">
@@ -113,17 +104,11 @@
             </ul>
         {% endif %}
     {% endwith %}
-        -->
 
     <div class="profile">
         <div class="avatar"></div>
         <div>
-            <h2>
-                {{ username }}
-                {% if privacy == 'Private' %}
-                    <span class="lock-icon" title="Private Account">🔒</span>
-                {% endif %}
-            </h2>
+            <h2>{{ username }}</h2>
             <a href="{{ url_for('routes.account_settings') }}"><button class="account-settings">Account Settings</button></a>
         </div>
     </div>
@@ -136,12 +121,12 @@
         </form>
         {% for board in boards %}
             <div class="board">
-                <div class="board-title">{{ board['name'] }}</div>
                 <div class="board-image"></div>
+                <span class="board-title">{{ board['name'] }}</span>
                 <form class="board-actions" action="{{ url_for('routes.profile') }}" method="post">
                     <button onclick="return confirm('Are you sure you would like to delete this board?')" name="delete" value="{{ board['_id'] }}">🗑️</button>
-                    <button type="submit" name="duplicate" value="{{ board['_id'] }}">Copy</button>
                     <button type="submit" name="edit" value="{{ board['_id'] }}">✏️</button>
+                    <button type="submit" name="duplicate" value="{{ board['_id'] }}">duplicate</button>
                 </form>
             </div>
         {% endfor %}
