@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
     <style> 
         body {
             font-family: Arial, sans-serif;
@@ -84,55 +89,47 @@
 <body>
     <div class="header">
         <div>
-            <a href="#">New</a>
-            <a href="#">Profile</a>
+            <a href="{{ url_for('routes.profile', new=True) }}">New</a>
+            <a href="{{ url_for('routes.profile') }}">Profile</a>
         </div>
-        <a href="login">Log Out</a>
+        <a href="{{ url_for('routes.logout') }}">Log Out</a>
     </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for category, message in messages %}
+                <li class="flash {{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
     <div class="profile">
         <div class="avatar"></div>
         <div>
-            <h2>Username</h2>
-            <a href="account-setting"><button class="account-settings">Account Settings</button></a>
+            <h2>{{ username }}</h2>
+            <a href="{{ url_for('routes.account_settings') }}"><button class="account-settings">Account Settings</button></a>
         </div>
     </div>
 
     <h3>Saved Boards</h3>
     <div class="boards-container">
-        <div class="new-board">+</div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
+        <form method="POST" action="{{ url_for('routes.profile') }}" class="new-board">
+            <input type="hidden" name="new" value="true">
+            <button type="submit">+</button>
+        </form>
+        {% for board in boards %}
+            <div class="board">
+                <div class="board-image"></div>
+                <span class="board-title">{{ board['name'] }}</span>
+                <form class="board-actions" action="{{ url_for('routes.profile') }}" method="post">
+                    <button onclick="return confirm('Are you sure you would like to delete this board?')" name="delete" value="{{ board['_id'] }}">🗑️</button>
+                    <button type="submit" name="edit" value="{{ board['_id'] }}">✏️</button>
+                    <button type="submit" name="duplicate" value="{{ board['_id'] }}">duplicate</button>
+                </form>
             </div>
-        </div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
-            </div>
-        </div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
-            </div>
-        </div>
-        <div class="board">
-            <div class="board-image"></div>
-            <span class="board-title">Board Title</span>
-            <div class="board-actions">
-                <button>🗑️</button>
-                <button>✏️</button>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </body>
 </html>

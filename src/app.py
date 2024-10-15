@@ -13,6 +13,9 @@ def db_connect():
     password = os.getenv('MONGO_PASSWORD')
     db_name = os.getenv('MONGO_DBNAME')
 
+    if not all([username, password, db_name]):
+        raise ValueError("Missing MongoDB credentials in .env file")
+    
     uri = f"mongodb+srv://{username}:{password}@cluster0.lrz8n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
     # Create a new client and connect to the server
@@ -24,9 +27,9 @@ def db_connect():
         print("Pinged your deployment. You successfully connected to MongoDB!")
     except Exception as e:
         print(e)
+        raise
 
-    db = client[db_name]
-    return db
+    return client[db_name]
 
 def get_db():
     if 'db' not in g:
@@ -51,3 +54,6 @@ def create_app():
 def register_blueprint(app):
     from src.routes import routes
     app.register_blueprint(routes)
+
+
+

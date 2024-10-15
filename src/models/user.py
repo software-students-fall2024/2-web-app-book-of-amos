@@ -21,10 +21,13 @@ def create_user(email: str, username:str, password:str):
 
 @login_manager.user_loader
 def user_loader(email): 
-    if not find_user(email):
+    found = find_user(email)
+    if not found:
         return
     user = User()
     user.id = email
+    user.email = email
+    user.username = found['username']
     return user
 @login_manager.request_loader
 def request_loader(request):
@@ -34,4 +37,9 @@ def request_loader(request):
     user = User()
     user.id = email
     return user
+
+
+
+
+
 
