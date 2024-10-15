@@ -1,127 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Make Board</title>
-        <style>
-            body {
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Board</title>
+    <style>
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
         }
 
-            .container {
-                width: 360px;
-                margin: auto;
-                background-color: #fff;
-                padding: 20px;
-                border: 1px solid #ddd;
-            }
-
-            .navbar {
-                display: flex;
-                justify-content: space-between;
-                background-color: #e0e0e0;
-                padding: 10px;
-            }
-
-            .navbar a {
-                text-decoration: none;
-                color: black;
-                font-weight: bold;
-            }
-
-            .search-bar {
-                margin: 10px 0;
-                text-align: center;
-            }
-
-            .search-bar input {
-                width: 90%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-
-            .board-title {
-                text-align: center;
-                margin: 20px 0;
-            }
-
-            .board {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border: 2px solid black;
-                padding: 20px;
-                height: 150px;
-                margin-bottom: 20px;
-            }
-
-            .board .pedal {
-                border: 1px solid black;
-                width: 50px;
-                height: 80px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 5px;
-            }
-
-            .pedal img {
-                width: 100%;
-                height: auto;
-            }
-
-            .button-group {
-                display: flex;
-                justify-content: space-around;
-                margin-bottom: 20px;
-            }
-
-            .button-group button {
-                background-color: #ddd;
-                border: none;
-                padding: 10px 20px;
-                cursor: pointer;
-                border-radius: 5px;
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
         }
 
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="navbar">
-                <a href="#">Back</a>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #e0e0e0;
+            padding: 10px;
+            align-items: center;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        .search-bar {
+            margin: 10px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .suggestions {
+            position: absolute;
+            width: 90%;
+            background-color: white;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            z-index: 1;
+            display: none;
+        }
+
+        .suggestions ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .suggestions ul li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestions ul li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .board-title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .board {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            border: 2px solid black;
+            padding: 10px;
+            min-height: 150px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .pedal {
+            border: 1px solid black;
+            width: 60px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px;
+            position: relative;
+        }
+
+        .pedal img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .button-group button {
+            background-color: #ddd;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button-group-bottom {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button-group-bottom button {
+            width: 32%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <a href="#">&#x2190;</a>
+            <div>
                 <a href="#">New</a>
                 <a href="profile.html">Profile</a>
                 <a href="login.html">Logout</a>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search for pedals here">
-            </div>
-            <div class="board-title">
-                <h3>Board Title (editable)</h3>
-            </div>
-            <div class="board">
-                <div class="pedal">X</div>
-                <div class="pedal">X</div>
-                <div class="pedal">X</div>
-                <div class="pedal">X</div>
-                <div class="pedal">X</div>
-            </div>
+        </div>
 
-            <div class="button-group">
-                <button>Undo</button>
-                <button>Redo</button>
-            </div>
-            <div class="button-group">
-                <button>Clear Board</button>
-                <button>Discard Changes</button>
-                <button>Save Board</button>
+        <div class="search-bar">
+            <input type="text" id="searchBar" placeholder="Search for pedals" oninput="searchPedals()">
+            <div class="suggestions" id="suggestions">
+                <ul id="suggestionsList"></ul>
             </div>
         </div>
-    </body>
+
+        <div class="board-title">
+            <h3 contenteditable="true">Board Title (editable)</h3>
+        </div>
+
+        <div class="board" id="pedalBoard">
+        </div>
+
+        <div class="button-group">
+            <button onclick="undoAction()">Undo</button>
+            <button onclick="redoAction()">Redo</button>
+        </div>
+
+        <div class="button-group-bottom">
+            <button onclick="clearBoard()">Clear Board</button>
+            <button onclick="discardChanges()">Discard Changes</button>
+            <button onclick="saveBoard()">Save Board</button>
+        </div>
+    </div>
+
+    <script>
+        let pedalData = [];
+        let boardData = {};
+        let filteredPedals = [];
+
+        async function fetchData() {
+            const pedalDataResponse = await fetch('src/data/pedal_data.json');
+            pedalData = await pedalDataResponse.json();  
+        }
+        function searchPedals() {
+            const searchValue = document.getElementById('searchBar').value.toLowerCase();
+            const suggestionsList = document.getElementById('suggestionsList');
+            const suggestionsDiv = document.getElementById('suggestions');
+
+            suggestionsList.innerHTML = ''; 
+            const filteredPedals = pedalData.filter(pedal => pedal.name.toLowerCase().includes(searchValue));
+
+            if (filteredPedals.length > 0 && searchValue !== '') {
+                suggestionsDiv.style.display = 'block'; 
+                filteredPedals.forEach(pedal => {
+                    const li = document.createElement('li');
+                    li.textContent = pedal.name;
+                    li.onclick = () => {
+                        addPedalToBoard(pedal);
+                        document.getElementById('searchBar').value = ''; 
+                        suggestionsDiv.style.display = 'none'; 
+                    };
+                    suggestionsList.appendChild(li);
+                });
+            } else {
+                suggestionsDiv.style.display = 'none'; 
+            }
+        }
+
+        function addPedalToBoard(pedal) {
+            const pedalBoardElement = document.getElementById('pedalBoard');
+            const pedalElement = document.createElement('div');
+            pedalElement.classList.add('pedal');
+            pedalElement.innerHTML = `<img src="${pedal.image_url}" alt="${pedal.name}">`;
+            pedalBoardElement.appendChild(pedalElement);
+        }
+
+        function clearBoard() {
+            document.getElementById('pedalBoard').innerHTML = '';
+        }
+
+       
+        function undoAction() {  }
+        function redoAction() {  }
+        function discardChanges() { }
+        function saveBoard() { }
+        window.onload = fetchData;
+    </script>
+</body>
 </html>
